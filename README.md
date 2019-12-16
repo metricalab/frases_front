@@ -5,9 +5,9 @@ Aplicación React para comunicar con el servicio de spring boot de refranes.
 
 ## Tecnologías/librerías
 
-Existen multitud de tecnologías y conceptos incluidos en el código entre las que destacan:
+Existen multitud de tecnologías entre las que destacan:
 
- * Proyecto React (getch para llamadas http, react hooks, jsx)
+ * Proyecto React (Fetch para llamadas http, react hooks y jsx)
  * Javascript ECMA6+ :
    + Arrow functions 
    + Template Strings
