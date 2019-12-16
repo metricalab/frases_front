@@ -14,6 +14,7 @@ Existen multitud de tecnologías entre las que destacan:
    + Let y const
    + Destructuring
    + Uso de map
+ * Framework de visualización: Materialize v 1.0.0
    
 ## Prerequisitos
 
