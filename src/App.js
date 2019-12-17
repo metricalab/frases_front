@@ -12,6 +12,7 @@ function App() {
   const [ordenamiento_ho, guardarOrdenamiento] = useState('');
   const [accion_ho, guardarAccion] = useState('');
   const [numeroRefranes_ho, guardarNumeroRefranes] = useState('');
+  const [criterioBusqueda_ho, guardarCriterioBusqueda] = useState('');
   const [error_ho, guardarError] = useState(false);
   const [datosApi_ho, guardarDatosApi] = useState({});
   const [datosListaApi_ho, guardarDatosListaApi] = useState({});
@@ -23,12 +24,25 @@ function App() {
     const consultarAPI = async () => {
       if (
         accion_ho === 'ACC2' &&
-        (numeroRefranes_ho === '' || ordenamiento_ho === '')
+        (numeroRefranes_ho === '' ||
+          ordenamiento_ho === '' ||
+          isNaN(numeroRefranes_ho))
       ) {
         return null;
       }
 
       if (accion_ho === 'ACC5' && ordenamiento_ho === '') {
+        return null;
+      }
+
+      if (
+        accion_ho === 'ACC6' &&
+        (criterioBusqueda_ho === '' || isNaN(criterioBusqueda_ho))
+      ) {
+        return null;
+      }
+
+      if (accion_ho === 'ACC7' && criterioBusqueda_ho === '') {
         return null;
       }
 
@@ -59,6 +73,12 @@ function App() {
         case 'ACC5':
           url = `${url_servicio}${puerto_var}/${contexto}/api/refranes/ordenar/${ordenamiento_ho}`;
           break;
+        case 'ACC6':
+          url = `${url_servicio}${puerto_var}/${contexto}/api/refranes/${criterioBusqueda_ho}`;
+          break;
+        case 'ACC7':
+          url = `${url_servicio}${puerto_var}/${contexto}/api/refranes/user/${criterioBusqueda_ho}`;
+          break;
         default:
           console.log(
             'Lo lamentamos, por el momento no disponemos de la acción ' +
@@ -72,7 +92,11 @@ function App() {
       const respuesta = await fetch(url);
       const resultado = await respuesta.json();
 
-      if (accion_ho === 'ACC2' || accion_ho === 'ACC5') {
+      if (
+        accion_ho === 'ACC2' ||
+        accion_ho === 'ACC5' ||
+        accion_ho === 'ACC7'
+      ) {
         guardarDatosListaApi(resultado);
       } else {
         guardarDatosApi(resultado);
@@ -80,10 +104,13 @@ function App() {
     };
 
     consultarAPI();
-  }, [ordenamiento_ho, accion_ho, numeroRefranes_ho]);
+  }, [ordenamiento_ho, accion_ho, numeroRefranes_ho, criterioBusqueda_ho]);
 
   const peticionDatosF = datosFormulario => {
     // Validaciones
+
+    console.log('valor: ' + isNaN(datosFormulario.criterioBusqueda));
+
     if (
       datosFormulario.accion === 'ACC2' &&
       (datosFormulario.numeroRefranes === '' ||
@@ -91,8 +118,24 @@ function App() {
     ) {
       guardarError(true);
     } else if (
+      datosFormulario.accion === 'ACC2' &&
+      isNaN(datosFormulario.numeroRefranes)
+    ) {
+      guardarError(true);
+    } else if (
       datosFormulario.accion === 'ACC5' &&
       datosFormulario.ordenamiento === ''
+    ) {
+      guardarError(true);
+    } else if (
+      datosFormulario.accion === 'ACC6' &&
+      (datosFormulario.criterioBusqueda === '' ||
+        isNaN(datosFormulario.criterioBusqueda))
+    ) {
+      guardarError(true);
+    } else if (
+      datosFormulario.accion === 'ACC7' &&
+      datosFormulario.criterioBusqueda === ''
     ) {
       guardarError(true);
     } else {
@@ -102,26 +145,39 @@ function App() {
     guardarOrdenamiento(datosFormulario.ordenamiento);
     guardarAccion(datosFormulario.accion);
     guardarNumeroRefranes(datosFormulario.numeroRefranes);
+    guardarCriterioBusqueda(datosFormulario.criterioBusqueda);
   };
 
   // Cargar un componente condicionalmente
   let componente;
   if (error_ho) {
+    let messageErr = 'Error';
     if (accion_ho === 'ACC2') {
-      componente = (
-        <Fail mensaje='Refranes y Orden son campos obligatorios para realizar esta consulta' />
-      );
+      messageErr = isNaN(numeroRefranes_ho)
+        ? 'Refranes debe ser un número'
+        : 'Refranes y Orden son campos obligatorios para realizar esta consulta';
+      componente = <Fail mensaje={messageErr} />;
     } else if (accion_ho === 'ACC5') {
       componente = (
         <Fail mensaje='Orden es un campo obligatorio para realizar esta consulta' />
       );
+    } else if (accion_ho === 'ACC6' || accion_ho === 'ACC7') {
+      componente = <Fail mensaje='Falta el criterio de busqueda' />;
     }
   } else {
     if (accion_ho === 'ACC3') {
       componente = <NumRefran resultado={datosApi_ho} accion={accion_ho} />;
-    } else if (accion_ho === 'ACC1' || accion_ho === 'ACC4') {
+    } else if (
+      accion_ho === 'ACC1' ||
+      accion_ho === 'ACC4' ||
+      accion_ho === 'ACC6'
+    ) {
       componente = <Refran resultado={datosApi_ho} accion={accion_ho} />;
-    } else if (accion_ho === 'ACC2' || accion_ho === 'ACC5') {
+    } else if (
+      accion_ho === 'ACC2' ||
+      accion_ho === 'ACC5' ||
+      accion_ho === 'ACC7'
+    ) {
       componente = (
         <ListaRefranes resultado={datosListaApi_ho} accion={accion_ho} />
       ); // Lista de refranes
