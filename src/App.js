@@ -16,8 +16,6 @@ function App() {
   const [datosApi_ho, guardarDatosApi] = useState({});
   const [datosListaApi_ho, guardarDatosListaApi] = useState({});
 
-  console.log('ff' + process.env.REACT_APP_CLIENT_ID);
-
   useEffect(() => {
     // prevenir ejecucion
     if (accion_ho === '') return;
@@ -63,7 +61,9 @@ function App() {
           break;
         default:
           console.log(
-            'Lo lamentamos, por el momento no disponemos de ' + accion_ho + '.'
+            'Lo lamentamos, por el momento no disponemos de la acción ' +
+              accion_ho +
+              '.'
           );
       }
 
