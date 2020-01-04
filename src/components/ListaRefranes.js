@@ -22,7 +22,7 @@ const ListaRefranes = ({ resultado, accion }) => {
       <React.Fragment>
         <div className='card-panel white cols s12'>
           <div className='back-text'>
-            <p>Lista de refranes </p>
+            <p>Lista de refranes</p>
 
             {resultado.map(refran => (
               <Refran key={refran.id} resultado={refran} accion={accion} />
@@ -33,7 +33,6 @@ const ListaRefranes = ({ resultado, accion }) => {
     );
   }
 
-  let listaRefranes = resultado;
   return componente;
 };
 
