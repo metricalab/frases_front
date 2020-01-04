@@ -87,7 +87,7 @@ function Body() {
         <Fail mensaje='Orden es un campo obligatorio para realizar esta consulta' />
       );
     } else if (accion_ho === 'ACC6' || accion_ho === 'ACC7') {
-      componente = <Fail mensaje='Falta el criterio de busqueda' />;
+      componente = <Fail mensaje='Falta el criterio de búsqueda' />;
     }
   } else {
     if (accion_ho === 'ACC3') {
