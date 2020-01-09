@@ -4,7 +4,8 @@ const FormFields = ({ peticionDatosF }) => {
   const [datosFormulario, guardarDatosFormulario] = useState({
     ordenamiento: '',
     accion: '',
-    numeroRefranes: ''
+    numeroRefranes: '',
+    criterioBusqueda: ''
   });
 
   const cambioDetectado = e => {
@@ -42,6 +43,17 @@ const FormFields = ({ peticionDatosF }) => {
       </div>
 
       <div className='input-field col s12'>
+        <input
+          type='text'
+          name='criterioBusqueda'
+          id='criterioBusqueda'
+          placeholder='-Criterio Busqueda-'
+          onChange={cambioDetectado}
+        />
+        <label htmlFor='numeroRefranes'>Criterio Búsqueda</label>
+      </div>
+
+      <div className='input-field col s12'>
         <select onChange={cambioDetectado} name='accion'>
           <option value=''>-Selecciona una acción-</option>
           <option value='ACC1'>Mejor refrán</option>
@@ -49,6 +61,8 @@ const FormFields = ({ peticionDatosF }) => {
           <option value='ACC3'>Numero total de refranes</option>
           <option value='ACC4'>Refran aleatorio</option>
           <option value='ACC5'>Ordenar todos los refranes</option>
+          <option value='ACC6'>Buscar por Id</option>
+          <option value='ACC7'>Buscar usuario</option>
         </select>
         <label htmlFor='numeroRefranes'>Acciones</label>
       </div>
